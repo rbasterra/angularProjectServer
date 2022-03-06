@@ -7,6 +7,8 @@ const session = require('express-session');
 const MongoStore = require('connect-mongo');
 require('./authentication/passport');
 
+const userRouter = require('./router/user.router');
+
 
 server.use(express.json());
 server.use(express.urlencoded({extended:false}));
@@ -24,6 +26,13 @@ server.use(session({
 
 server.use(passport.initialize());
 server.use(passport.session());
+
+server.use('/user', userRouter);
+server.use('*', (req, res, next) => {
+    const error = new Error('Resource not found');
+    error.status = 404;
+    return next(error);
+});
 
 
 

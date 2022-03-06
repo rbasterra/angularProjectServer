@@ -37,9 +37,9 @@ function generateUuid (){
     return newUuid;
 }
 
-passport.use('register', new LocalStrategy)({
-    usernameField: 'userEmail',
-    passwordField: 'userPwd',
+passport.use('register', new LocalStrategy({
+    usernameField: 'email',
+    passwordField: 'password',
     passReqToCallback: true,
 }, async (req, username, password, done) => {
     try{
@@ -55,15 +55,15 @@ passport.use('register', new LocalStrategy)({
 
         const newUser = new User({
             _id: generateUuid(),
-            name: req.body.user_name,
-            lastname: req.body.user_lastname,
-            email: req.body.user_email,
+            name: req.body.name,
+            lastname: req.body.lastname,
+            email: req.body.email,
             password: encryptedPwd,
-            phoneNumber: req.body.user_phoneNumber,
-            birthDate: req.body.user_birthdate,
-            address: req.body.user_address,
-            city: req.body.user_city,
-            postal_code: req.body.user_postalCode,
+            phoneNumber: req.body.phoneNumber,
+            birthDate: req.body.birthdate,
+            address: req.body.address,
+            city: req.body.city,
+            postal_code: req.body.postalCode,
         });
 
         const savedUser = await newUser.save();
@@ -74,11 +74,11 @@ passport.use('register', new LocalStrategy)({
     catch(error) {
         return done(error);
     }
-})
+}))
 
 passport.use('login', new LocalStrategy({
-    usernameField: 'userEmail',
-    passwordField: 'userPwd',
+    usernameField: 'email',
+    passwordField: 'password',
     passReqToCallback: true,
 }, async (req, username, password, done) => {
     try{
