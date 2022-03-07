@@ -21,6 +21,8 @@ userRouter.post('/register', (req, res, next) => {
 });
 
 userRouter.post('/login', (req, res, next) => {
+
+    console.log(req.body);
     
     const callback = (error, user) => {
         if (error){
