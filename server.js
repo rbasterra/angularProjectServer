@@ -8,7 +8,10 @@ const MongoStore = require('connect-mongo');
 const cors = require('cors');
 require('./authentication/passport');
 
+const auth = require('./middlewares/auth.middleware');
+
 const userRouter = require('./router/user.router');
+const testRouter = require('./router/test.router');
 
 
 server.use(express.json());
@@ -31,6 +34,8 @@ server.use(passport.session());
 server.options('*', cors());
 
 server.use('/user', [cors()], userRouter);
+server.use('/test', [cors(), auth.isAuthenticated], testRouter);
+
 server.use('*', (req, res, next) => {
     const error = new Error('Resource not found');
     error.status = 404;

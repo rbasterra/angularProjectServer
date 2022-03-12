@@ -11,7 +11,8 @@ const userSchema = new Schema({
     birthDate: {type:Date},
     address: {type:String},
     city: {type:String},
-    postal_code: {type:Number}
+    postal_code: {type:Number},
+    province: {type:String}
 
 }, {timestamps:true});
 
