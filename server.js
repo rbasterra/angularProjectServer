@@ -5,9 +5,13 @@ const config = require('./config');
 const passport = require('passport');
 const session = require('express-session');
 const MongoStore = require('connect-mongo');
+const cors = require('cors');
 require('./authentication/passport');
 
+const auth = require('./middlewares/auth.middleware');
+
 const userRouter = require('./router/user.router');
+const testRouter = require('./router/test.router');
 
 
 server.use(express.json());
@@ -27,7 +31,11 @@ server.use(session({
 server.use(passport.initialize());
 server.use(passport.session());
 
-server.use('/user', userRouter);
+server.options('*', cors());
+
+server.use('/user', [cors()], userRouter);
+server.use('/test', [cors(), auth.isAuthenticated], testRouter);
+
 server.use('*', (req, res, next) => {
     const error = new Error('Resource not found');
     error.status = 404;

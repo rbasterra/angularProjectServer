@@ -46,7 +46,7 @@ passport.use('register', new LocalStrategy({
         const existingUser = await User.findOne({email: username});
 
         if (existingUser){
-            error = new Error (`User email ${existingUser.email} already exists`);
+            const error = new Error (`Authentication failed: User email ${existingUser.email} already exists`);
             error.status = 409;
             return done(error);
         }
@@ -63,11 +63,12 @@ passport.use('register', new LocalStrategy({
             birthDate: req.body.birthdate,
             address: req.body.address,
             city: req.body.city,
-            postal_code: req.body.postalCode,
+            postal_code: req.body.postal_code,
+            province: req.body.province
         });
 
         const savedUser = await newUser.save();
-
+        savedUser.password = null;
         return done(null, savedUser);        
 
     }
@@ -85,7 +86,7 @@ passport.use('login', new LocalStrategy({
         const user = await User.findOne({email: username});
 
         if (!user){
-            const error = new Error('User email not found');
+            const error = new Error('Authentication failed: User email not found');
             error.status = 404;
             return done(error);
         }
@@ -93,7 +94,7 @@ passport.use('login', new LocalStrategy({
         const isValidPassword = await bcrypt.compare(password, user.password);
 
         if (!isValidPassword){
-            const error = new Error('Wrong password');
+            const error = new Error('Authentication failed: Wrong password');
             error.status = 401;
             return done(error);
         }
