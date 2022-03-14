@@ -6,10 +6,13 @@ const User = require('../models/User');
 const config = require('../config');
 
 
-passport.serializeUser((user,done) => {return done(null,user._id)});
+passport.serializeUser((user,done) => {
+    return done(null,user._id)
+});
 
 
 passport.deserializeUser(async(userId,done)=>{
+    
     try{
         const existingUser = await User.findById(userId);
         return done(null,existingUser);

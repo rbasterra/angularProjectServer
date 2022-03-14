@@ -16,14 +16,15 @@ const testRouter = require('./router/test.router');
 
 server.use(express.json());
 server.use(express.urlencoded({extended:false}));
-server.disabled('x-powered-by');
+server.disable('x-powered-by');
 
 server.use(session({
     secret: config.SESSION_SECRET,
     resave: false,
     saveUninitialized: false,
     cookie: {
-        maxAge: 3600000
+        maxAge: 3600000,
+        secure: false
     },
     store: MongoStore.create({mongoUrl: config.DB_URL})
 }));
@@ -31,9 +32,19 @@ server.use(session({
 server.use(passport.initialize());
 server.use(passport.session());
 
-server.options('*', cors());
+const corsWhiteList = ['http://localhost:4200', 'https://marvel-service-project.vercel.app/'];
 
-server.use('/user', [cors()], userRouter);
+const corsOptions = {
+    origin: (origin, callback) => {
+        if (corsWhiteList.indexOf(origin) !== -1) callback(null,true)
+        else callback(new Error('Not allowed by CORS'))
+    },
+    credentials: true
+}
+
+server.options('*', cors(corsOptions));
+
+server.use('/user', [cors(corsOptions)], userRouter);
 server.use('/test', [cors(), auth.isAuthenticated], testRouter);
 
 server.use('*', (req, res, next) => {

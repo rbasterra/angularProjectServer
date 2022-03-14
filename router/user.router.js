@@ -42,6 +42,7 @@ userRouter.post('/login', (req, res, next) => {
 });
 
 userRouter.post('/logout', (req, res, next) => {
+   
     if(!req.user){
         return res.sendStatus(304);
     }
