@@ -23,9 +23,7 @@ server.use(session({
     resave: false,
     saveUninitialized: false,
     cookie: {
-        maxAge: 3600000,
-        secure: true,
-        sameSite: 'none'
+        maxAge: 3600000
     },
     store: MongoStore.create({mongoUrl: config.DB_URL})
 }));
