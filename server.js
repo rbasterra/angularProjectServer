@@ -24,7 +24,8 @@ server.use(session({
     saveUninitialized: false,
     cookie: {
         maxAge: 3600000,
-        secure: false
+        secure: true,
+        sameSite: 'none'
     },
     store: MongoStore.create({mongoUrl: config.DB_URL})
 }));
