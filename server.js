@@ -40,7 +40,9 @@ const corsOptions = {
         if (corsWhiteList.indexOf(origin) !== -1) {
             console.log('cors callback true');
             callback(null,true)}
-        else callback(new Error('Not allowed by CORS'))
+        else {
+            console.log('cors callback error');
+            callback(new Error('Not allowed by CORS'))}
     },
     credentials: true
 }
