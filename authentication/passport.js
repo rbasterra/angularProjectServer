@@ -62,7 +62,7 @@ passport.use('register', new LocalStrategy({
             lastname: req.body.lastname,
             email: req.body.email,
             password: encryptedPwd,
-            phoneNumber: req.body.phoneNumber,
+            phoneNumber: req.body.phone,
             birthDate: req.body.birthdate,
             address: req.body.address,
             city: req.body.city,

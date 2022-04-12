@@ -31,7 +31,7 @@ server.use(session({
 server.use(passport.initialize());
 server.use(passport.session());
 
-const corsWhiteList = ['http://localhost:4200', 'https://marvel-service-project.vercel.app'];
+const corsWhiteList = ['http://localhost:4200', 'https://marvel-service-project.vercel.app', 'https://localhost'];
 
 const corsOptions = {
     origin: (origin, callback) => {
