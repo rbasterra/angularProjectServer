@@ -6,10 +6,13 @@ const User = require('../models/User');
 const config = require('../config');
 
 
-passport.serializeUser((user,done) => {return done(null,user._id)});
+passport.serializeUser((user,done) => {
+    return done(null,user._id)
+});
 
 
 passport.deserializeUser(async(userId,done)=>{
+    
     try{
         const existingUser = await User.findById(userId);
         return done(null,existingUser);
@@ -59,7 +62,7 @@ passport.use('register', new LocalStrategy({
             lastname: req.body.lastname,
             email: req.body.email,
             password: encryptedPwd,
-            phoneNumber: req.body.phoneNumber,
+            phoneNumber: req.body.phone,
             birthDate: req.body.birthdate,
             address: req.body.address,
             city: req.body.city,
