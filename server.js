@@ -18,15 +18,36 @@ server.use(express.json());
 server.use(express.urlencoded({extended:false}));
 server.disable('x-powered-by');
 
+/*
+    start cookie secure
+*/
+
+server.set('trust proxy', 1);
+
 server.use(session({
     secret: config.SESSION_SECRET,
     resave: false,
     saveUninitialized: false,
     cookie: {
-        maxAge: 3600000
+        maxAge: 3600000,
+        secure: true
     },
     store: MongoStore.create({mongoUrl: config.DB_URL})
 }));
+
+/*
+    end cookie secure
+*/
+
+// server.use(session({
+//     secret: config.SESSION_SECRET,
+//     resave: false,
+//     saveUninitialized: false,
+//     cookie: {
+//         maxAge: 3600000
+//     },
+//     store: MongoStore.create({mongoUrl: config.DB_URL})
+// }));
 
 server.use(passport.initialize());
 server.use(passport.session());
